@@ -36,7 +36,7 @@ const gallery = document.querySelector('.gallery');
 const markup = images
   .map(
     ({ preview, original, description }) => `
-    <li>
+    <li  class="gallery__item">
       <img
         src="${preview}"
         data-source="${original}"
@@ -49,13 +49,18 @@ const markup = images
 
 gallery.innerHTML = markup;
 
-// Делегування подій
 gallery.addEventListener('click', (event) => {
   event.preventDefault();
 
-  const img = event.target.closest('img');
-  if (!img) return;
+  const img = event.target;
+  if (img.nodeName !== 'IMG') return;
 
   const largeImageURL = img.dataset.source;
+  const instance = basicLightbox.create(`
+    <img src="${largeImageURL}" alt="${img.alt}" />
+  `);
+
+  instance.show();
+
   console.log('Велике зображення:', largeImageURL);
 });
